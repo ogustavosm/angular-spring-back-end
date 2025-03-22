@@ -1,6 +1,6 @@
 package com.learning.springboot.checklistapi.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,9 +26,9 @@ public class ChecklistItemEntity extends BaseEntity  {
 	
 	private Boolean isCompleted;
 	
-	private LocalTime deadline;
+	private LocalDate deadline;
 	
-	private LocalTime postedDate;
+	private LocalDate postedDate;
 	
 	@ManyToOne
 	private CategoryEntity category;
@@ -38,8 +38,8 @@ public class ChecklistItemEntity extends BaseEntity  {
 		super();
 	}
 
-	public ChecklistItemEntity(Long checkListItemId, String description, Boolean isCompleted, LocalTime deadline,
-			LocalTime postedDate, CategoryEntity category) {
+	public ChecklistItemEntity(Long checkListItemId, String description, Boolean isCompleted, LocalDate deadline,
+			LocalDate postedDate, CategoryEntity category) {
 		super();
 		this.checkListItemId = checkListItemId;
 		this.description = description;
@@ -73,19 +73,19 @@ public class ChecklistItemEntity extends BaseEntity  {
 		this.isCompleted = isCompleted;
 	}
 
-	public LocalTime getDeadline() {
+	public LocalDate getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(LocalTime deadline) {
+	public void setDeadline(LocalDate deadline) {
 		this.deadline = deadline;
 	}
 
-	public LocalTime getPostedDate() {
+	public LocalDate getPostedDate() {
 		return postedDate;
 	}
 
-	public void setPostedDate(LocalTime postedDate) {
+	public void setPostedDate(LocalDate postedDate) {
 		this.postedDate = postedDate;
 	}
 
