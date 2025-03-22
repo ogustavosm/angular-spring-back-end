@@ -21,14 +21,13 @@ public class ChecklistApiApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-					.allowedOrigins("http://localhost:4200")
-					.allowedMethods("GET", "PUT", "OPTIONS", "PUT", "DELETE")
-					.maxAge(900)
-					.allowedHeaders("Origin", "X-Request-With", "Content-Type", "Accept", "Authorization");
+						.allowedOrigins("http://localhost:4200")
+						.allowedMethods("GET", "PUT", "OPTIONS", "POST", "DELETE", "PATCH")
+						.maxAge(900)
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization");
 			}
 		};
 	}
-
 
     @Profile("aws")
     @Bean
@@ -37,10 +36,10 @@ public class ChecklistApiApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-					.allowedOrigins("http://localhost:4200")
-					.allowedMethods("GET", "PUT", "OPTIONS", "PUT", "DELETE")
-					.maxAge(900)
-					.allowedHeaders("Origin", "X-Request-With", "Content-Type", "Accept", "Authorization");
+						.allowedOrigins("http://checklist-spa.s3-website-sa-east-1.amazonaws.com")
+						.allowedMethods("GET", "PUT", "OPTIONS", "POST", "DELETE", "PATCH")
+						.maxAge(900)
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization");
 			}
 		};
 	}
