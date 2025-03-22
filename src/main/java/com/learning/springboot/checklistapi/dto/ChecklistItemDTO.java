@@ -4,13 +4,25 @@ import java.time.LocalDate;
 
 import com.learning.springboot.checklistapi.entity.ChecklistItemEntity;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ChecklistItemDTO {
 	
 	private String guid;
+	
+    @NotBlank(message = "Checklist item description cannot be either null or empty")
 	private String description;
+    
+    @NotNull(message = "Is completed is mandatory")
 	private Boolean isCompleted;
+    
+    @NotNull(message = "Deadline is mandatory")
 	private LocalDate deadline;
+    
 	private LocalDate postedDate;
+	
+    @NotBlank(message = "Category guid cannot be either null or empty")
 	private String categoryGuid;
 
 	public static ChecklistItemDTO toDTO(ChecklistItemEntity checklistItemEntity) {

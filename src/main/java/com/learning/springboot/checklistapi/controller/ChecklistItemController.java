@@ -68,7 +68,7 @@ public class ChecklistItemController {
 	public ResponseEntity<Void> updateChecklistItem(@RequestBody ChecklistItemDTO checklistItemDTO){
 		
 		if (StringUtils.hasLength(checklistItemDTO.getGuid())) {
-			throw new ValidationException("Guid is mandatory");
+			throw new ValidationException("Checklist item guid is mandatory");
 		}
 		
 		this.checklistItemService.updateChecklistItem(

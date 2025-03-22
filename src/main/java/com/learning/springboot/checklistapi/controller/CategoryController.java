@@ -63,8 +63,8 @@ public class CategoryController {
 	@PutMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> updateCategory(@RequestBody CategoryDTO categoryDTO){
 		
-		if (StringUtils.hasLength(categoryDTO.getGuid())) {
-			throw new ValidationException("Guid is mandatory");
+		if (StringUtils.hasText(categoryDTO.getGuid())) {
+			throw new ValidationException("Category guid cannot be null or empty");
 		}
 		
 		this.categoryService.updateCategory(

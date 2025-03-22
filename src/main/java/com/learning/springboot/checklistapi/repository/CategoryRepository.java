@@ -11,5 +11,7 @@ import com.learning.springboot.checklistapi.entity.CategoryEntity;
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
 	
 	Optional<CategoryEntity> findByGuid(String guid);
+	
+	Optional<CategoryEntity> findByName(String name);
 
 }

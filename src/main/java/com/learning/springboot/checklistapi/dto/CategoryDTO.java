@@ -2,10 +2,13 @@ package com.learning.springboot.checklistapi.dto;
 
 import com.learning.springboot.checklistapi.entity.CategoryEntity;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CategoryDTO {
 	
     private String guid;
     
+    @NotBlank(message = "Category name cannot be either null or empty")
     private String name;
     
 	public static CategoryDTO toDTO(CategoryEntity categoryEntity) {
