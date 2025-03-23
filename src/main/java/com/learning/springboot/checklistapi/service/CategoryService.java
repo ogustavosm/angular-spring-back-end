@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -25,15 +26,16 @@ public class CategoryService {
     private ChecklistItemRepository checklistItemRepository;
     private CategoryRepository categoryRepository;
     
-    
     private static final Logger LOGGER = LogManager.getLogger(CategoryService.class);
     
-
+    
+    @Autowired
     public CategoryService(ChecklistItemRepository checklistItemRepository, CategoryRepository categoryRepository){
         this.checklistItemRepository = checklistItemRepository;
         this.categoryRepository = categoryRepository;
     }
 
+    
     public CategoryEntity addNewCategory(String name){
 
         if(!StringUtils.hasText(name)){

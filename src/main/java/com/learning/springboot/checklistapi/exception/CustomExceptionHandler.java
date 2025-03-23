@@ -2,7 +2,7 @@ package com.learning.springboot.checklistapi.exception;
 
 import java.time.LocalDateTime;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

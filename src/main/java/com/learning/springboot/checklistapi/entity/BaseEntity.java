@@ -1,6 +1,6 @@
 package com.learning.springboot.checklistapi.entity;
 
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class BaseEntity {

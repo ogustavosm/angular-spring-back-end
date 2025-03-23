@@ -21,15 +21,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChecklistItemService {
 
-    @Autowired
     private ChecklistItemRepository checklistItemRepository;
-
-    @Autowired
     private CategoryRepository categoryRepository;
     
     private static final Logger LOGGER = LogManager.getLogger(ChecklistItemService.class);
     
 
+    @Autowired
+    public ChecklistItemService(ChecklistItemRepository checklistItemRepository,
+			CategoryRepository categoryRepository) {
+		super();
+		this.checklistItemRepository = checklistItemRepository;
+		this.categoryRepository = categoryRepository;
+	}
+    
+    
     private void validateChecklistItemData(String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
 
         if(!StringUtils.hasText(description)){
@@ -49,7 +55,8 @@ public class ChecklistItemService {
         }
     }
 
-    public ChecklistItemEntity updateChecklistItem(String guid, String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
+
+	public ChecklistItemEntity updateChecklistItem(String guid, String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
 
         if(!StringUtils.hasText(guid)){
             throw new IllegalArgumentException("Guid cannot be null or empty");

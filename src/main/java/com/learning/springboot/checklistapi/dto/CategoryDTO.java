@@ -1,6 +1,6 @@
 package com.learning.springboot.checklistapi.dto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import com.learning.springboot.checklistapi.entity.CategoryEntity;
 

@@ -43,7 +43,7 @@ public class DbLoader implements CommandLineRunner {
             Optional<CategoryEntity> catOpt =
                     this.categoryRepository.findByName(categoryName);
 
-            if(!catOpt.isPresent()){
+            if(catOpt.isEmpty()){
                 categoryService.addNewCategory(categoryName);
             }
         }
