@@ -1,15 +1,15 @@
 package com.learning.springboot.checklistapi.entity;
 
-import jakarta.persistence.MappedSuperclass;
+import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class BaseEntity {
-	
-	private String guid;
-	
 
+    private String guid;
+    
+    
 	public BaseEntity() {
-
+		super();
 	}
 
 	public BaseEntity(String guid) {
@@ -17,6 +17,7 @@ public class BaseEntity {
 		this.guid = guid;
 	}
 
+	
 	public String getGuid() {
 		return guid;
 	}
@@ -24,8 +25,6 @@ public class BaseEntity {
 	public void setGuid(String guid) {
 		this.guid = guid;
 	}
-	
-	
-	
-
+    
+    
 }

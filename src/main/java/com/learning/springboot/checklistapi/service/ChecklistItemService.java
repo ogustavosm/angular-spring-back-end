@@ -1,9 +1,10 @@
 package com.learning.springboot.checklistapi.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,108 +20,125 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class ChecklistItemService {
-	
-	private ChecklistItemRepository checklistItemRepository;
-	private CategoryRepository categoryRepository;
-	
 
-	@Autowired
-	public ChecklistItemService(ChecklistItemRepository checklistItemRepository, CategoryRepository categoryRepository) {
-		super();
-		this.checklistItemRepository = checklistItemRepository;
-		this.categoryRepository = categoryRepository;
-	}
+    @Autowired
+    private ChecklistItemRepository checklistItemRepository;
 
-	
-	protected void validateChecklistItemData(String description, Boolean isCompleted, LocalDate deadline, String categoryGuid) {
-		if (StringUtils.hasText(description)) {
-			throw new IllegalArgumentException("Checklist item must have a description");
-		}
-		
-		if (isCompleted == null) {
-			throw new IllegalArgumentException("Checklist item must have a flag indicating if it is completed or not");
-		}
-		
-		if (deadline == null) {
-			throw new IllegalArgumentException("Checklist item must have a deadline");
-		}
-		
-		if (StringUtils.hasText(categoryGuid)) {
-			throw new IllegalArgumentException("Checklist item guid must be provided");
-		}
-	}
-	
-	
-	public ChecklistItemEntity addNewChecklistItem(String description, Boolean isCompleted, LocalDate deadline, String categoryGuid) {
-		
-		this.validateChecklistItemData(description, isCompleted, deadline, categoryGuid);
-		
-		CategoryEntity retrievedCategory = this.categoryRepository.findByGuid(categoryGuid).orElseThrow(() -> new ResourceNotFoundException("Category not found."));
-		
-		ChecklistItemEntity checklistItemEntity = new ChecklistItemEntity();
-		checklistItemEntity.setGuid(UUID.randomUUID().toString());
-		checklistItemEntity.setDescription(description);
-		checklistItemEntity.getDeadline();
-		checklistItemEntity.setPostedDate(LocalDate.now());
-		checklistItemEntity.setCategory(retrievedCategory);
-		
-		return checklistItemRepository.save(checklistItemEntity);
-	}
-	
-	
-	public List<ChecklistItemEntity> findAllChecklistItems(){
-		return this.checklistItemRepository.findAll();
-	}
-	
-	
-	public void deleteChecklistItem(String guid) {
-		if (StringUtils.hasText(guid)) {
-			throw new IllegalArgumentException("Guid cannot be null or empty");
-		}
-		
-		ChecklistItemEntity retrievedItem = this.checklistItemRepository.findByGuid(guid).orElseThrow(() -> new ResourceNotFoundException("Checklist item not found"));
-		
-		this.checklistItemRepository.delete(retrievedItem);
-	}
-	
-	
-	public ChecklistItemEntity updateChecklistItem(String guid, String description, Boolean isCompleted, LocalDate deadline, String categoryGuid) {
-		
-		if(!StringUtils.hasText(guid)) {
-			throw new IllegalArgumentException("Guid cannot be null or empty");
-		}
-		
-		ChecklistItemEntity retrievedItem = this.checklistItemRepository.findByGuid(guid).orElseThrow(() -> new ResourceNotFoundException("Checklist item not found"));
+    @Autowired
+    private CategoryRepository categoryRepository;
+    
+    private static final Logger LOGGER = LogManager.getLogger(ChecklistItemService.class);
+    
 
-		if (StringUtils.hasText(description)) {
-			retrievedItem.setDescription(description);
-		}
-		
-		if (isCompleted != null) {
-			retrievedItem.setIsCompleted(isCompleted);;
-		}
-		
-		if (deadline != null) {
-			retrievedItem.setDeadline(deadline);
-		}
-		
-		if(!StringUtils.hasText(categoryGuid)) {
-			CategoryEntity retrievedCategory = this.categoryRepository.findByGuid(categoryGuid).orElseThrow(() -> new ResourceNotFoundException("Category not found."));
+    private void validateChecklistItemData(String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
 
-			retrievedItem.setCategory(retrievedCategory);
-		}
-		
-		return this.checklistItemRepository.save(retrievedItem);
-	}
-	
-	
-	public ChecklistItemEntity findChecklistItemEntityByGuid(String guid) {
-		if (!StringUtils.hasText(guid)) {
-			throw new IllegalArgumentException("Category guid cannot be empty or null");
-		}
-		
-		return this.checklistItemRepository.findByGuid(guid).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-	}
-	
+        if(!StringUtils.hasText(description)){
+            throw new IllegalArgumentException("Checklist item must have a description");
+        }
 
+        if(!StringUtils.hasText(categoryGuid)){
+            throw new IllegalArgumentException("Checklist item category guid must be provided");
+        }
+
+        if(isCompleted == null){
+            throw new IllegalArgumentException("Checklist item must have a flag indicating if it is completed or not");
+        }
+
+        if(deadline == null) {
+            throw new IllegalArgumentException("Checklist item must have a deadline");
+        }
+    }
+
+    public ChecklistItemEntity updateChecklistItem(String guid, String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
+
+        if(!StringUtils.hasText(guid)){
+            throw new IllegalArgumentException("Guid cannot be null or empty");
+        }
+
+        ChecklistItemEntity retrievedItem = this.checklistItemRepository.findByGuid(guid)
+                .orElseThrow(() -> new ResourceNotFoundException("Checklist item not found"));
+
+        if(StringUtils.hasText(description)){
+            retrievedItem.setDescription(description);
+        }
+
+        if(isCompleted != null){
+            retrievedItem.setIsCompleted(isCompleted);
+        }
+
+        if(deadline != null) {
+            retrievedItem.setDeadline(deadline);
+        }
+
+        if(StringUtils.hasText(categoryGuid)){
+            CategoryEntity retrievedCategory = this.categoryRepository.findByGuid(categoryGuid)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+            retrievedItem.setCategory(retrievedCategory);
+        }
+
+        LOGGER.debug("Updating checklist item [ checklistItem = {} ]", retrievedItem.toString());
+
+        return this.checklistItemRepository.save(retrievedItem);
+    }
+
+    public ChecklistItemEntity addNewChecklistItem(String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
+
+        this.validateChecklistItemData(description, isCompleted, deadline,categoryGuid);
+
+        CategoryEntity retrievedCategory = this.categoryRepository.findByGuid(categoryGuid)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        ChecklistItemEntity checklistItemEntity = new ChecklistItemEntity();
+        checklistItemEntity.setGuid(UUID.randomUUID().toString());
+        checklistItemEntity.setDescription(description);
+        checklistItemEntity.setDeadline(deadline);
+        checklistItemEntity.setPostedDate(LocalDate.now());
+        checklistItemEntity.setCategory(retrievedCategory);
+        checklistItemEntity.setIsCompleted(isCompleted);
+
+        LOGGER.debug("Adding new checklist item [ checklistItem = {} ]", checklistItemEntity);
+
+        return checklistItemRepository.save(checklistItemEntity);
+
+    }
+
+    public ChecklistItemEntity findChecklistItemByGuid(String guid){
+        if(!StringUtils.hasText(guid)){
+            throw new IllegalArgumentException("Guid cannot be empty or null");
+        }
+        return this.checklistItemRepository.findByGuid(guid).orElseThrow(
+                () -> new ResourceNotFoundException("ChecklistItem not found")
+        );
+    }
+
+    public Iterable<ChecklistItemEntity> findAllChecklistItems(){
+        return this.checklistItemRepository.findAll();
+    }
+
+    public void deleteChecklistItem(String guid){
+
+        if(!StringUtils.hasText(guid)){
+            throw new IllegalArgumentException("Guid cannot be null or empty");
+        }
+        ChecklistItemEntity retrievedItem = this.checklistItemRepository.findByGuid(guid)
+                .orElseThrow(() -> new ResourceNotFoundException("Checklist item not found"));
+
+        LOGGER.debug("Deleting checklist item [ guid ={} ]", guid);
+
+        this.checklistItemRepository.delete(retrievedItem);
+    }
+
+    public void updateIsCompleteStatus(String guid, boolean isComplete) {
+        if(!StringUtils.hasText(guid)){
+            throw new IllegalArgumentException("Guid cannot be null or empty");
+        }
+        ChecklistItemEntity retrievedItem = this.checklistItemRepository.findByGuid(guid)
+                .orElseThrow(() -> new ResourceNotFoundException("Checklist item not found"));
+
+        LOGGER.debug("Updating checklist item completed status [ guid ={}, isCompete={} ]", guid, isComplete);
+
+        retrievedItem.setIsCompleted(isComplete);
+
+        this.checklistItemRepository.save(retrievedItem);
+    }
 }

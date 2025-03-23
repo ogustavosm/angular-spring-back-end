@@ -1,5 +1,9 @@
 package com.learning.springboot.checklistapi;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +18,9 @@ public class ChecklistApiApplication {
 		SpringApplication.run(ChecklistApiApplication.class, args);
 	}
 
-    @Profile("local")
-    @Bean
-    WebMvcConfigurer corsLocalConfig() {
+	@Profile("local")
+	@Bean
+	public WebMvcConfigurer corsLocalConfig(){
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
@@ -29,9 +33,9 @@ public class ChecklistApiApplication {
 		};
 	}
 
-    @Profile("aws")
-    @Bean
-    WebMvcConfigurer corsAwsConfig() {
+	@Profile("aws")
+	@Bean
+	public WebMvcConfigurer corsAwsConfig(){
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
@@ -42,6 +46,27 @@ public class ChecklistApiApplication {
 						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization");
 			}
 		};
+	}
+
+	@Bean
+	public OpenAPI customOpenApi(){
+
+		return new OpenAPI()
+				.info(new Info()
+						.title("Checklist API for Udemy Curse")
+						.description("Sample API created for learning purposes")
+						.contact(new Contact()
+								.name("Carlos Lazarin")
+								.email("carlos.joia.mail@gmail.com")
+						)
+						.version("V1")
+						.termsOfService("http://mywebsite.com.br")
+						.license(
+								new License()
+								.name("Apache 2.0")
+						)
+				);
+
 	}
 
 }

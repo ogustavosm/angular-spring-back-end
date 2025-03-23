@@ -15,41 +15,38 @@ import com.learning.springboot.checklistapi.entity.CategoryEntity;
 import com.learning.springboot.checklistapi.repository.CategoryRepository;
 import com.learning.springboot.checklistapi.service.CategoryService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Profile("data-load")
+@Slf4j
 @Component
-public class DbLoader implements CommandLineRunner{
+public class DbLoader implements CommandLineRunner {
 	
-	private CategoryRepository categoryRepository;
-	private CategoryService categoryService;
-	
-	private static final Logger LOGGER = LogManager.getLogger(DbLoader.class);
-	
-	
-	@Autowired
-	public DbLoader(CategoryRepository categoryRepository, CategoryService categoryService) {
-		super();
-		this.categoryRepository = categoryRepository;
-		this.categoryService = categoryService;
-	}
+    private static final Logger LOGGER = LogManager.getLogger(DbLoader.class);
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
 
-	@Override
-	public void run(String... args) throws Exception {
-		
-		LOGGER.info("Populating database with categories...");
-		
-		List<String> categoryNames = Arrays.asList(
-				"Trabalho", "Saúde", "Educação", "Pessoal", "Outros"
-				);
-		
-		for (String categoryName: categoryNames) {
-			Optional<CategoryEntity> catOpt = this.categoryRepository.findByName(categoryName);
-			
-			if(!catOpt.isPresent()) {
-				categoryService.addNewCategory(categoryName);
-			}
-		}
-	}
-	
+    @Override
+    public void run(String... args) throws Exception {
 
+    	LOGGER.info("Populating db with categories");
+
+        List<String> categoryNames = Arrays.asList(
+                "Trabalho","Saúde","Educação","Pessoal", "Outros"
+        );
+
+        for(String categoryName : categoryNames){
+
+            Optional<CategoryEntity> catOpt =
+                    this.categoryRepository.findByName(categoryName);
+
+            if(!catOpt.isPresent()){
+                categoryService.addNewCategory(categoryName);
+            }
+        }
+
+    }
 }

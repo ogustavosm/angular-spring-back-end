@@ -5,17 +5,16 @@ import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 
 public class ExceptionalResponse {
-	
-	LocalDateTime timestamp;
-	private String message;
-	private HttpStatus status;
-	
-	
+
+    private LocalDateTime timestamp;
+    private String message;
+    private HttpStatus status;
+    
+    
 	public ExceptionalResponse() {
-		super();
+	
 	}
 
-	
 	public ExceptionalResponse(LocalDateTime timestamp, String message, HttpStatus status) {
 		super();
 		this.timestamp = timestamp;
@@ -23,7 +22,7 @@ public class ExceptionalResponse {
 		this.status = status;
 	}
 
-
+	
 	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
@@ -47,6 +46,6 @@ public class ExceptionalResponse {
 	public void setStatus(HttpStatus status) {
 		this.status = status;
 	}
+    
 	
-
 }

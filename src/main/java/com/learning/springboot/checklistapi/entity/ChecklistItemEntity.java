@@ -2,46 +2,43 @@ package com.learning.springboot.checklistapi.entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Getter
-@Setter
 @Entity(name="ChecklistItem")
-@Table(indexes = {@Index(name = "IDX_GUID_CK_IT", columnList = "guid")})
-public class ChecklistItemEntity extends BaseEntity  {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long checkListItemId;
-	
-	private String description;
-	
-	private Boolean isCompleted;
-	
-	private LocalDate deadline;
-	
-	private LocalDate postedDate;
-	
-	@ManyToOne
-	private CategoryEntity category;
+@Table(indexes = { @Index(name = "IDX_GUID_CK_IT", columnList = "guid")})
+public class ChecklistItemEntity extends BaseEntity{
 
-	
-	public ChecklistItemEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long checklistItemId;
+
+    private String description;
+
+    private Boolean isCompleted;
+
+    private LocalDate deadline;
+
+    private LocalDate postedDate;
+
+    @ManyToOne
+    private CategoryEntity category;
+    
+    
+ 	public ChecklistItemEntity() {
 		super();
 	}
 
-	public ChecklistItemEntity(Long checkListItemId, String description, Boolean isCompleted, LocalDate deadline,
+ 	
+	public ChecklistItemEntity(Long checklistItemId, String description, Boolean isCompleted, LocalDate deadline,
 			LocalDate postedDate, CategoryEntity category) {
 		super();
-		this.checkListItemId = checkListItemId;
+		this.checklistItemId = checklistItemId;
 		this.description = description;
 		this.isCompleted = isCompleted;
 		this.deadline = deadline;
@@ -49,12 +46,13 @@ public class ChecklistItemEntity extends BaseEntity  {
 		this.category = category;
 	}
 
-	public Long getCheckListItemId() {
-		return checkListItemId;
+	
+	public Long getChecklistItemId() {
+		return checklistItemId;
 	}
 
-	public void setCheckListItemId(Long checkListItemId) {
-		this.checkListItemId = checkListItemId;
+	public void setChecklistItemId(Long checklistItemId) {
+		this.checklistItemId = checklistItemId;
 	}
 
 	public String getDescription() {
@@ -96,6 +94,6 @@ public class ChecklistItemEntity extends BaseEntity  {
 	public void setCategory(CategoryEntity category) {
 		this.category = category;
 	}
-	
-
+    
+    
 }
